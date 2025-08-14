@@ -1,7 +1,7 @@
 import os
 import re
 import logging
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from PIL import Image, ImageOps
 import pytesseract
 
@@ -9,19 +9,16 @@ import pytesseract
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Konfigurasi Tesseract
-if os.name == 'nt':  # Windows
-    pytesseract.pytesseract.tesseract_cmd = r"C:\Users\user\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
-else:  # Linux/Unix-based (seperti Replit)
-    pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+#Tambah ke Skripsi kalo su dapat desak
+pytesseract.pytesseract.tesseract_cmd = r"C:\Users\user\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 
-# Konfigurasi folder upload
-UPLOAD_FOLDER = '/tmp/uploads' if 'REPLIT' in os.environ else 'uploads'
+
+UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 app = Flask(__name__)
-app.config['UP நைல்_போல்டர்'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -146,6 +143,4 @@ def upload():
         return render_template('index.html', error=f'Terjadi kesalahan: {str(e)}')
 
 if __name__ == '__main__':
-    host = '0.0.0.0' if 'REPLIT' in os.environ else '127.0.0.1'
-    port = int(os.environ.get('PORT', 8080 if 'REPLIT' in os.environ else 5000))
-    app.run(host=host, port=port, debug='REPLIT' not in os.environ)
+    app.run(debug=True)
