@@ -1,7 +1,7 @@
 import os
 import re
 import logging
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from PIL import Image, ImageOps
 import pytesseract
 
@@ -21,7 +21,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UP நைல்_போல்டர்'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -148,4 +148,4 @@ def upload():
 if __name__ == '__main__':
     host = '0.0.0.0' if 'REPLIT' in os.environ else '127.0.0.1'
     port = int(os.environ.get('PORT', 8080 if 'REPLIT' in os.environ else 5000))
-    app.run(host=host, port=port, debug=not 'REPLIT' in os.environ)
+    app.run(host=host, port=port, debug='REPLIT' not in os.environ)
