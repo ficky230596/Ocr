@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hasil OCR KTP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 700px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #6e45e2;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-size: 1em;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        li:hover {
+            transform: translateX(10px);
+            background: #dfe6e9;
+        }
+        li strong {
+            color: #6e45e2;
+            font-weight: 600;
+        }
+        pre {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-top: 20px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        a:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+        a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h3 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Hasil Ekstraksi KTP</h1>
+        <h3>Data yang Diekstrak:</h3>
+
+        <h3>Pemeriksaan Teks:</h3>
+        <ul>
+            <li>Nama: <strong>{{ input_name }}</strong> - Status: <strong>{{ text_matches['Nama'] }}</strong></li>
+            <li>Tempat/Tgl Lahir: <strong>{{ input_tempat_tgl_lahir }}</strong> - Status: <strong>{{ text_matches['Tempat/Tgl Lahir'] }}</strong></li>
+            <li>Alamat: <strong>{{ input_alamat }}</strong> - Status: <strong>{{ text_matches['Alamat'] }}</strong></li>
+            <li>Agama: <strong>{{ input_agama }}</strong> - Status: <strong>{{ text_matches['Agama'] }}</strong></li>
+            <li>Gol Darah: <strong>{{ input_gol_darah }}</strong> - Status: <strong>{{ text_matches['Gol Darah'] }}</strong></li>
+        </ul>
+        <h3>Teks Mentah:</h3>
+        <pre>{{ text }}</pre>
+        <a href="{{ url_for('index') }}">Kembali ke Upload</a>
+    </div>
+</body>
+</html>

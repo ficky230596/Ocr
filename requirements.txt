@@ -1,0 +1,4 @@
+Flask==2.2.5
+Pillow==10.0.1
+pytesseract==0.3.10
+Werkzeug==2.2.3

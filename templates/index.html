@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Gambar KTP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            background: #ecf0f1;
+            font-size: 1em;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="file"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(110, 69, 226, 0.5);
+            background: #fff;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #6e45e2, #88d3ce);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        button:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 90%;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        function formatTanggalLahir(input) {
+            // Ambil nilai input dan hapus karakter non-digit
+            let value = input.value.replace(/[^0-9]/g, '');
+            let tempat = '';
+            
+            // Pisahkan tempat dan tanggal jika ada koma
+            let parts = input.value.split(',');
+            if (parts.length > 1) {
+                tempat = parts[0].trim() + ', ';
+                value = parts[1].replace(/[^0-9]/g, '');
+            }
+
+            // Format tanggal: DD-MM-YYYY
+            if (value.length >= 8) {
+                value = value.slice(0, 8); // Batasi ke 8 digit (DDMMYYYY)
+                value = value.replace(/(\d{2})(\d{2})(\d{4})/, '$1-$2-$3');
+            } else if (value.length > 4) {
+                value = value.replace(/(\d{2})(\d{2})/, '$1-$2-');
+            } else if (value.length > 2) {
+                value = value.replace(/(\d{2})/, '$1-');
+            }
+
+            // Gabungkan kembali tempat dan tanggal
+            input.value = tempat + value;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Gambar KTP</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            <label for="name">Masukkan Nama:</label>
+            <input type="text" name="name" id="name" required>
+            <label for="tempat_tgl_lahir">Masukkan Tempat/Tgl Lahir:</label>
+            <input type="text" name="tempat_tgl_lahir" id="tempat_tgl_lahir" oninput="formatTanggalLahir(this)" required>
+            <label for="alamat">Masukkan Alamat:</label>
+            <input type="text" name="alamat" id="alamat" required>
+            <label for="agama">Masukkan Agama:</label>
+            <input type="text" name="agama" id="agama" required>
+            <label for="gol_darah">Masukkan Gol Darah:</label>
+            <input type="text" name="gol_darah" id="gol_darah" required>
+            <label for="image">Pilih Gambar KTP:</label>
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Preview & Atur OCR</title>
+    <script>
+        function updatePreview() {
+            let filename = "{{ filename }}";
+            let grayscale = document.getElementById('grayscale').checked;
+            let contrast = document.getElementById('contrast').value;
+            let threshold = document.getElementById('threshold').value;
+            let rotate = document.getElementById('rotate').value;
+
+            let imgUrl = `/preview_image?filename=${filename}&grayscale=${grayscale}&contrast=${contrast}&threshold=${threshold}&rotate=${rotate}`;
+            document.getElementById('preview-img').src = imgUrl;
+        }
+    </script>
+</head>
+<body>
+    <h1>Preview & Pengaturan OCR</h1>
+    <div>
+        <label><input type="checkbox" id="grayscale" checked onchange="updatePreview()"> Grayscale</label><br>
+        <label>Kontras: <input type="range" id="contrast" min="0.5" max="3" step="0.1" value="1" onchange="updatePreview()"></label><br>
+        <label>Threshold: <input type="number" id="threshold" min="0" max="255" placeholder="none" onchange="updatePreview()"></label><br>
+        <label>Rotate: <input type="number" id="rotate" value="0" onchange="updatePreview()"> derajat</label><br>
+    </div>
+    <img id="preview-img" src="{{ url_for('preview_image', filename=filename) }}" style="max-width:600px; display:block; margin-top:10px;">
+
+    <form action="{{ url_for('process_ocr') }}" method="post">
+        <input type="hidden" name="filename" value="{{ filename }}">
+        <input type="hidden" name="grayscale" id="form-grayscale">
+        <input type="hidden" name="contrast" id="form-contrast">
+        <input type="hidden" name="threshold" id="form-threshold">
+        <input type="hidden" name="rotate" id="form-rotate">
+        <button type="submit" onclick="
+            document.getElementById('form-grayscale').value = document.getElementById('grayscale').checked;
+            document.getElementById('form-contrast').value = document.getElementById('contrast').value;
+            document.getElementById('form-threshold').value = document.getElementById('threshold').value;
+            document.getElementById('form-rotate').value = document.getElementById('rotate').value;
+        ">Proses OCR</button>
+    </form>
+</body>
+</html>
