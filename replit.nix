@@ -1,6 +1,11 @@
 { pkgs }: {
   deps = [
+    pkgs.python311
+    pkgs.python311Packages.pip
+    pkgs.python311Packages.flask
+    pkgs.python311Packages.pillow
+    pkgs.python311Packages.pytesseract
     pkgs.tesseract
-    pkgs.tesseract4
+    pkgs.tesseractLanguages.ind
   ];
 }
